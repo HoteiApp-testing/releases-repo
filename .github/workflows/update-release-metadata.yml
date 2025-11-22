@@ -1,0 +1,74 @@
+name: Update Release Metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'Project ID (e.g., go3t, miapp)'
+        required: true
+        type: string
+      version:
+        description: 'Release version (e.g., 0.0.2-dev)'
+        required: true
+        type: string
+      release_url:
+        description: 'Direct download URL of the release asset'
+        required: true
+        type: string
+      all_releases_url:
+        description: 'URL to all releases page'
+        required: true
+        type: string
+      date:
+        description: 'Release date (YYYY-MM-DD, leave empty for today)'
+        required: false
+        type: string
+
+jobs:
+  update-metadata:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout releases-repo
+        uses: actions/checkout@v4
+        with:
+          repository: HoteiApp-testing/releases-repo
+          token: ${{ secrets.RELEASES_REPO_TOKEN }}
+          path: releases-repo
+      
+      - name: Setup release date
+        id: setup_date
+        run: |
+          if [ -z "${{ github.event.inputs.date }}" ]; then
+            echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          else
+            echo "date=${{ github.event.inputs.date }}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create project directory if not exists
+        run: |
+          mkdir -p releases-repo/metadata/${{ github.event.inputs.project_id }}
+      
+      - name: Generate releases.json
+        run: |
+          cat > releases-repo/metadata/${{ github.event.inputs.project_id }}/releases.json << 'EOF'
+          {
+            "releases": [
+              {
+                "version": "${{ github.event.inputs.version }}",
+                "releaseUrl": "${{ github.event.inputs.release_url }}",
+                "allReleasesUrl": "${{ github.event.inputs.all_releases_url }}",
+                "date": "${{ steps.setup_date.outputs.date }}"
+              }
+            ]
+          }
+          EOF
+      
+      - name: Commit and push changes
+        run: |
+          cd releases-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add metadata/${{ github.event.inputs.project_id }}/releases.json
+          git commit -m "Update metadata for ${{ github.event.inputs.project_id }} v${{ github.event.inputs.version }}"
+          git push
