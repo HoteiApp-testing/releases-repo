@@ -32,8 +32,6 @@ jobs:
       - name: Checkout releases-repo
         uses: actions/checkout@v4
         with:
-          repository: HoteiApp-testing/releases-repo
-          token: ${{ secrets.RELEASES_REPO_TOKEN }}
           path: releases-repo
       
       - name: Setup release date
@@ -49,20 +47,39 @@ jobs:
         run: |
           mkdir -p releases-repo/metadata/${{ github.event.inputs.project_id }}
       
+      - name: Read existing releases
+        id: read_existing
+        run: |
+          PROJECT_DIR="releases-repo/metadata/${{ github.event.inputs.project_id }}"
+          RELEASES_FILE="$PROJECT_DIR/releases.json"
+          
+          if [ -f "$RELEASES_FILE" ]; then
+            # Read existing releases and escape JSON for passing as output
+            EXISTING_RELEASES=$(cat "$RELEASES_FILE" | jq -c '.releases' | sed 's/\$/\\$/g')
+            echo "existing_releases=$EXISTING_RELEASES" >> $GITHUB_OUTPUT
+          else
+            echo "existing_releases=[]" >> $GITHUB_OUTPUT
+          fi
+      
       - name: Generate releases.json
         run: |
-          cat > releases-repo/metadata/${{ github.event.inputs.project_id }}/releases.json << 'EOF'
-          {
-            "releases": [
-              {
-                "version": "${{ github.event.inputs.version }}",
-                "releaseUrl": "${{ github.event.inputs.release_url }}",
-                "allReleasesUrl": "${{ github.event.inputs.all_releases_url }}",
-                "date": "${{ steps.setup_date.outputs.date }}"
-              }
-            ]
-          }
-          EOF
+          PROJECT_DIR="releases-repo/metadata/${{ github.event.inputs.project_id }}"
+          RELEASES_FILE="$PROJECT_DIR/releases.json"
+          
+          # Create new release entry
+          NEW_RELEASE=$(jq -n --arg version "${{ github.event.inputs.version }}" \
+                            --arg releaseUrl "${{ github.event.inputs.release_url }}" \
+                            --arg allReleasesUrl "${{ github.event.inputs.all_releases_url }}" \
+                            --arg date "${{ steps.setup_date.outputs.date }}" \
+                            '{version: $version, releaseUrl: $releaseUrl, allReleasesUrl: $allReleasesUrl, date: $date}')
+          
+          # Get existing releases
+          EXISTING_RELEASES='${{ steps.read_existing.outputs.existing_releases }}'
+          
+          # Combine new release with existing ones
+          jq -n --argjson newRelease "$NEW_RELEASE" \
+                 --argjson existingReleases "$EXISTING_RELEASES" \
+                 '{releases: ([$newRelease] + $existingReleases)}' > "$RELEASES_FILE"
       
       - name: Commit and push changes
         run: |
