@@ -7,22 +7,6 @@ on:
         description: 'Project ID (e.g., go3t, miapp)'
         required: true
         type: string
-      version:
-        description: 'Release version (e.g., 0.0.2-dev)'
-        required: true
-        type: string
-      release_url:
-        description: 'Direct download URL of the release asset'
-        required: true
-        type: string
-      all_releases_url:
-        description: 'URL to all releases page'
-        required: true
-        type: string
-      date:
-        description: 'Release date (YYYY-MM-DD, leave empty for today)'
-        required: false
-        type: string
 
 jobs:
   update-metadata:
@@ -34,14 +18,24 @@ jobs:
         with:
           path: releases-repo
       
-      - name: Setup release date
-        id: setup_date
+      - name: Get latest release info
+        id: get_release
         run: |
-          if [ -z "${{ github.event.inputs.date }}" ]; then
-            echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
-          else
-            echo "date=${{ github.event.inputs.date }}" >> $GITHUB_OUTPUT
-          fi
+          # Get the latest release from GitHub API
+          RESPONSE=$(curl -s -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/HoteiApp-testing/${{ github.event.inputs.project_id }}/releases/latest")
+          
+          # Extract release information
+          VERSION=$(echo "$RESPONSE" | jq -r '.tag_name' | sed 's/^v//')
+          RELEASE_URL=$(echo "$RESPONSE" | jq -r '.assets[0].browser_download_url')
+          ALL_RELEASES_URL="https://github.com/HoteiApp-testing/${{ github.event.inputs.project_id }}/releases"
+          DATE=$(echo "$RESPONSE" | jq -r '.published_at' | cut -d'T' -f1)
+          
+          # Export values for later steps
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "release_url=$RELEASE_URL" >> $GITHUB_OUTPUT
+          echo "all_releases_url=$ALL_RELEASES_URL" >> $GITHUB_OUTPUT
+          echo "date=$DATE" >> $GITHUB_OUTPUT
       
       - name: Create project directory if not exists
         run: |
@@ -67,10 +61,10 @@ jobs:
           RELEASES_FILE="$PROJECT_DIR/releases.json"
           
           # Create new release entry
-          NEW_RELEASE=$(jq -n --arg version "${{ github.event.inputs.version }}" \
-                            --arg releaseUrl "${{ github.event.inputs.release_url }}" \
-                            --arg allReleasesUrl "${{ github.event.inputs.all_releases_url }}" \
-                            --arg date "${{ steps.setup_date.outputs.date }}" \
+          NEW_RELEASE=$(jq -n --arg version "${{ steps.get_release.outputs.version }}" \
+                            --arg releaseUrl "${{ steps.get_release.outputs.release_url }}" \
+                            --arg allReleasesUrl "${{ steps.get_release.outputs.all_releases_url }}" \
+                            --arg date "${{ steps.get_release.outputs.date }}" \
                             '{version: $version, releaseUrl: $releaseUrl, allReleasesUrl: $allReleasesUrl, date: $date}')
           
           # Get existing releases
@@ -87,5 +81,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add metadata/${{ github.event.inputs.project_id }}/releases.json
-          git commit -m "Update metadata for ${{ github.event.inputs.project_id }} v${{ github.event.inputs.version }}"
+          git commit -m "Update metadata for ${{ github.event.inputs.project_id }} v${{ steps.get_release.outputs.version }}"
           git push
