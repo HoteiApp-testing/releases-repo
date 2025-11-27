@@ -1,9 +1,9 @@
 {
   "releases": [
     {
-      "version": "v0.0.3",
+      "version": "v0.0.1",
       "changelog": "### Features\n- Initial release",
-      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.3/Go3t-Windows-v0.0.3.exe",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.1/Go3t-Windows-v0.0.1.exe",
       "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
       "date": "2025-11-27"
     }
