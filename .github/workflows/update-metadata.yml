@@ -1,0 +1,93 @@
+name: Update Metadata on Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  update-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set Environment Variables
+        id: vars
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Initialize variables
+          VERSION=""
+          ASSET_URL=""
+          DATE=""
+
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+             # Auto-fetch latest release using GitHub CLI
+             echo "Manual trigger: Fetching latest release info..."
+             
+             # Get JSON data for the latest release
+             RELEASE_JSON=$(gh release view --json tagName,assets,publishedAt)
+             
+             VERSION=$(echo "$RELEASE_JSON" | jq -r .tagName)
+             
+             # Find .exe asset url
+             ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | test("\\.exe$"; "i")) | .url' | head -n 1)
+             if [ -z "$ASSET_URL" ]; then
+               # Fallback to first asset
+               ASSET_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[0].url')
+             fi
+             
+             # Get date from publishedAt (format YYYY-MM-DD)
+             DATE=$(echo "$RELEASE_JSON" | jq -r .publishedAt | cut -d'T' -f1)
+
+          else
+            # Triggered by release event
+            echo "Triggered by release event..."
+            VERSION="${{ github.event.release.tag_name }}"
+            DATE=$(date +'%Y-%m-%d')
+            
+            # Find the first asset that ends with .exe (case insensitive)
+            ASSET_URL=$(jq -r '.release.assets[] | select(.name | test("\\.exe$"; "i")) | .browser_download_url' "$GITHUB_EVENT_PATH" | head -n 1)
+            
+            # Fallback if no .exe found, take the first asset
+            if [ -z "$ASSET_URL" ]; then
+              ASSET_URL=$(jq -r '.release.assets[0].browser_download_url' "$GITHUB_EVENT_PATH")
+            fi
+          fi
+          
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "ASSET_URL=$ASSET_URL" >> $GITHUB_ENV
+          echo "DATE=$DATE" >> $GITHUB_ENV
+          echo "ALL_RELEASES_URL=https://github.com/${{ github.repository }}/releases" >> $GITHUB_ENV
+          
+          echo "Resolved: Version=$VERSION, Date=$DATE"
+
+      - name: Update JSON Metadata
+        run: |
+          # Create a temporary file for the new JSON content
+          tmp=$(mktemp)
+          
+          # Ensure directory exists
+          mkdir -p metadata/go3t
+          
+          # If the file doesn't exist or is empty, initialize it
+          if [ ! -f metadata/go3t/go3t.json ]; then
+            echo '{"releases": []}' > metadata/go3t/go3t.json
+          fi
+
+          jq --arg version "${{ env.VERSION }}" \
+             --arg releaseUrl "${{ env.ASSET_URL }}" \
+             --arg allReleasesUrl "${{ env.ALL_RELEASES_URL }}" \
+             --arg date "${{ env.DATE }}" \
+             '.releases |= [{ "version": $version, "releaseUrl": $releaseUrl, "allReleasesUrl": $allReleasesUrl, "date": $date }] + .' \
+             metadata/go3t/go3t.json > "$tmp" && mv "$tmp" metadata/go3t/go3t.json
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update metadata for release ${{ env.VERSION }}"
+          file_pattern: metadata/go3t/go3t.json
