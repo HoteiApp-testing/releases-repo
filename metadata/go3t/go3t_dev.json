@@ -1,0 +1,11 @@
+{
+  "releases": [
+    {
+      "version": "v0.0.2-dev-0cfb5d0",
+      "changelog": "### Features\n- Correciones de Ficheros de traducción\n- Support reading secrets from environment variables\n- Otra feature nueva...\n\n### Bugfixes\n- Corrección de errores en la traducción\n- Fix null pointer in integrations\n- Fix crash al cerrar la app...\n\n### Otros\n- Actualización de dependencias",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.2-dev-0cfb5d0/Go3t-Windows-v0.0.2-dev-0cfb5d0.exe",
+      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
+      "date": "2025-11-28"
+    }
+  ]
+}
