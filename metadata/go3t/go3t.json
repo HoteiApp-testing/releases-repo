@@ -1,6 +1,12 @@
 {
   "releases": [
     {
+      "version": "v0.0.2",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.2/Go3t-Windows-v0.0.2.exe",
+      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
+      "date": "2025-11-25"
+    },
+    {
       "version": "0.0.2-dev",
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.1-dev.20251121045313.c752c72/go3t-0.0.1-devc752c72.exe",
       "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
