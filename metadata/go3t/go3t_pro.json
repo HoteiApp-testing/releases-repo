@@ -1,6 +1,13 @@
 {
   "releases": [
     {
+      "version": "v0.0.7",
+      "changelog": "### Features\n- Initial release\n- Core application functionality\n- User authentication system\n- Data management module\n- Reporting dashboard\n- Export to PDF/Excel capabilities\n\n### Improvements\n- Enhanced UI/UX design\n- Performance optimizations\n- Security enhancements\n- Database query improvements\n- API response time reduction\n\n### Fixes\n- Login validation issues\n- Data synchronization bugs\n- Report generation errors\n- Memory leak fixes\n- Cross-browser compatibility\n\n### Known Issues\n- Minor display issues on mobile devices\n- Occasional slow loading times with large datasets",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.7/Go3t-Windows-v0.0.7.exe",
+      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
+      "date": "2025-12-07"
+    },
+    {
       "version": "v0.0.6",
       "changelog": "### Features\n- Initial release",
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.6/Go3t-Windows-v0.0.6.exe",
@@ -13,13 +20,6 @@
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.5/Go3t-Windows-v0.0.5.exe",
       "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
       "date": "2025-12-07"
-    },
-    {
-      "version": "v0.0.1",
-      "changelog": "### Features\n- Initial release",
-      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.1/Go3t-Windows-v0.0.1.exe",
-      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
-      "date": "2025-11-29"
     }
   ]
 }
