@@ -1,6 +1,13 @@
 {
   "releases": [
     {
+      "version": "v0.0.7-dev-4415f91",
+      "changelog": "### Features\n- Correciones de Ficheros de traducción\n- Support reading secrets from environment variables\n- Otra feature nueva...\n\n### Bugfixes\n- Corrección de errores en la traducción\n- Fix null pointer in integrations\n- Fix crash al cerrar la app...\n\n### Otros\n- Actualización de dependencias",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.7-dev-4415f91/Go3t-Windows-v0.0.7-dev-4415f91.exe",
+      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
+      "date": "2025-12-07"
+    },
+    {
       "version": "v0.0.7-dev-369a0fc",
       "changelog": "### Features\n- Correciones de Ficheros de traducción\n- Support reading secrets from environment variables\n- Otra feature nueva...\n\n### Bugfixes\n- Corrección de errores en la traducción\n- Fix null pointer in integrations\n- Fix crash al cerrar la app...\n\n### Otros\n- Actualización de dependencias",
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.7-dev-369a0fc/Go3t-Windows-v0.0.7-dev-369a0fc.exe",
@@ -11,13 +18,6 @@
       "version": "v0.0.7-dev-b3407f5",
       "changelog": "### Features\n- Correciones de Ficheros de traducción\n- Support reading secrets from environment variables\n- Otra feature nueva...\n\n### Bugfixes\n- Corrección de errores en la traducción\n- Fix null pointer in integrations\n- Fix crash al cerrar la app...\n\n### Otros\n- Actualización de dependencias",
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.7-dev-b3407f5/Go3t-Windows-v0.0.7-dev-b3407f5.exe",
-      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
-      "date": "2025-12-07"
-    },
-    {
-      "version": "v0.0.5-dev-5e68f7f",
-      "changelog": "### Features\n- Correciones de Ficheros de traducción\n- Support reading secrets from environment variables\n- Otra feature nueva...\n\n### Bugfixes\n- Corrección de errores en la traducción\n- Fix null pointer in integrations\n- Fix crash al cerrar la app...\n\n### Otros\n- Actualización de dependencias",
-      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.5-dev-5e68f7f/Go3t-Windows-v0.0.5-dev-5e68f7f.exe",
       "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
       "date": "2025-12-07"
     }
