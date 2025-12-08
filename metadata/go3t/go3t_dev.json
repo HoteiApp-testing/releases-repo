@@ -1,6 +1,13 @@
 {
   "releases": [
     {
+      "version": "v0.0.8-dev-95feec2",
+      "changelog": "### Features\n- New testing features for upcoming release\n- Experimental dashboard module\n- Beta reporting tools\n- Preview export functionality\n\n### Improvements\n- UI refinements based on user feedback\n- Backend performance tweaks\n- API endpoint optimizations\n- Database connection pooling\n\n### Fixes\n- Fixed intermittent crashes in data module\n- Resolved login timeout issues\n- Corrected report formatting bugs\n- Addressed memory consumption spikes\n\n### Testing Notes\n- This is a development build for internal testing\n- Not recommended for production use\n- Contains experimental features that may change\n- Feedback welcome for upcoming stable release",
+      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.8-dev-95feec2/Go3t-Windows-v0.0.8-dev-95feec2.exe",
+      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
+      "date": "2025-12-08"
+    },
+    {
       "version": "v0.0.8-dev-91b975a",
       "changelog": "### Features\n- New testing features for upcoming release\n- Experimental dashboard module\n- Beta reporting tools\n- Preview export functionality\n\n### Improvements\n- UI refinements based on user feedback\n- Backend performance tweaks\n- API endpoint optimizations\n- Database connection pooling\n\n### Fixes\n- Fixed intermittent crashes in data module\n- Resolved login timeout issues\n- Corrected report formatting bugs\n- Addressed memory consumption spikes\n\n### Testing Notes\n- This is a development build for internal testing\n- Not recommended for production use\n- Contains experimental features that may change\n- Feedback welcome for upcoming stable release",
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.8-dev-91b975a/Go3t-Windows-v0.0.8-dev-91b975a.exe",
@@ -13,13 +20,6 @@
       "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.8-dev-97d9d7e/Go3t-Windows-v0.0.8-dev-97d9d7e.exe",
       "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
       "date": "2025-12-08"
-    },
-    {
-      "version": "v0.0.8-dev-5db5182",
-      "changelog": "### Features\n- New testing features for upcoming release\n- Experimental dashboard module\n- Beta reporting tools\n- Preview export functionality\n\n### Improvements\n- UI refinements based on user feedback\n- Backend performance tweaks\n- API endpoint optimizations\n- Database connection pooling\n\n### Fixes\n- Fixed intermittent crashes in data module\n- Resolved login timeout issues\n- Corrected report formatting bugs\n- Addressed memory consumption spikes\n\n### Testing Notes\n- This is a development build for internal testing\n- Not recommended for production use\n- Contains experimental features that may change\n- Feedback welcome for upcoming stable release",
-      "releaseUrl": "https://github.com/HoteiApp-testing/releases-repo/releases/download/v0.0.8-dev-5db5182/Go3t-Windows-v0.0.8-dev-5db5182.exe",
-      "allReleasesUrl": "https://github.com/HoteiApp-testing/releases-repo/releases",
-      "date": "2025-12-07"
     }
   ]
 }
